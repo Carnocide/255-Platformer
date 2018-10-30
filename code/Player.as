@@ -19,6 +19,8 @@
 		private var jumpCounter:int = 2;
 		private var jumpAmount:Number = 400;
 		
+		
+		
 		public function Player() {
 			// constructor code
 		} // ends constructor
@@ -27,7 +29,8 @@
 			
 			
 			if(KeyboardInput.OnKeyDown(Keyboard.SPACE)){
-				velocity.y = -200;
+				if(jumpCounter > 0) velocity.y = -200;
+				
 				jumpCounter--;
 				jumpAmount = 400;
 			}
