@@ -26,16 +26,22 @@
 		private var jumpAmount: Number = 400;
 
 		private var isGrounded = false;
+		
+		public var collider:AABB;
 
 		public function Player() {
+			collider = new AABB(width/2, height/2);
 			// constructor code
 		} // ends constructor
 
 		public function update(): void {
 			handleWalking();
 			doPhysics();
-			detectGround();
+			//detectGround();
 			handleJumping();
+			
+			collider.calcEdges(x, y);
+			isGrounded = false;
 
 		}
 		/**
@@ -63,7 +69,7 @@
 		private function handleJumping(): void {
 			if (KeyboardInput.OnKeyDown(Keyboard.SPACE)) {
 				//if(jumpCounter > 0) velocity.y = -200;
-
+				trace(airJumpCounter);
 				/*				jumpCounter--;*/
 				if (isGrounded) {
 					velocity.y = -400;
@@ -108,6 +114,21 @@
 				velocity.y = 0;
 				airJumpCounter = AIR_JUMPS_MAX;
 				isGrounded = true;
+			}
+		}
+		
+		public function applyFix(fix:Point):void {
+			if (fix.x != 0) {
+				x += fix.x;
+				velocity.x = 0;
+			}
+			if (fix.y != 0) {
+				y += fix.y;
+				velocity.y = 0;
+			}
+			if(fix.y < 0) {
+				isGrounded=true;
+				airJumpCounter = AIR_JUMPS_MAX;
 			}
 		}
 
